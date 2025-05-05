@@ -1,0 +1,50 @@
+-- Connect to Beeline
+beeline
+
+-- Use your database
+USE wcastro;
+
+-- Create external table
+CREATE EXTERNAL TABLE climate_temp (
+  dt STRING,
+  AverageTemperature FLOAT,
+  AverageTemperatureUncertainty FLOAT,
+  Country STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/wcastro/climate';
+
+-- Clean data
+CREATE TABLE clean_climate_temp AS
+SELECT *
+FROM climate_temp
+WHERE AverageTemperature IS NOT NULL
+  AND Country IS NOT NULL
+  AND dt IS NOT NULL;
+
+-- Tempo analysis
+CREATE TABLE tempo_analysis AS
+SELECT SUBSTRING(dt, 1, 4) AS year,
+       AVG(AverageTemperature) AS avg_temp
+FROM clean_climate_temp
+GROUP BY SUBSTRING(dt, 1, 4)
+ORDER BY year;
+
+-- Spatial analysis
+CREATE TABLE spatial_analysis AS
+SELECT Country,
+       AVG(AverageTemperature) AS avg_temp
+FROM clean_climate_temp
+GROUP BY Country
+ORDER BY avg_temp DESC;
+
+-- Export tables
+INSERT OVERWRITE DIRECTORY '/user/wcastro/tempo_analysis'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM tempo_analysis;
+
+INSERT OVERWRITE DIRECTORY '/user/wcastro/spatial_analysis'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM spatial_analysis;
