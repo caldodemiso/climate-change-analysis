@@ -1,0 +1,15 @@
+# Open local terminal (Mac/Linux)
+cd ~/Downloads
+
+# Use scp to upload CSV to cluster
+scp ~/Desktop/GlobalLandTemperaturesByCountry.csv ******@144.24.46.199:~
+
+# Use scp to download analysis results back from cluster
+scp -r ******@144.24.46.199:~/tempo_analysis ~/Desktop/
+scp -r ******@144.24.46.199:~/spatial_analysis ~/Desktop/
+
+# Use Excel to open the .csv, add headers, and save cleaned files
+
+# Optional: count rows to verify
+cat ~/Desktop/spatial_analysis/000000_0 | wc -l
+cat ~/Desktop/tempo_analysis/000000_0 | wc -l
