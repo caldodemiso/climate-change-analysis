@@ -1,0 +1,22 @@
+# Connect to cluster
+ssh ******@144.24.46.199
+
+# Make HDFS directory
+hdfs dfs -mkdir /user/******/climate
+
+# Upload CSV to HDFS
+hdfs dfs -put GlobalLandTemperaturesByCountry.csv /user/******/climate
+
+# Check file in HDFS
+hdfs dfs -ls /user/******/climate
+
+# Check analysis outputs
+hdfs dfs -ls /user/******/tempo_analysis
+hdfs dfs -ls /user/******/spatial_analysis
+
+# Download result folders
+hdfs dfs -get /user/******/tempo_analysis ~/tempo_analysis
+hdfs dfs -get /user/******/spatial_analysis ~/spatial_analysis
+
+# Cleanup Linux home dir to free space
+rm ~/GlobalLandTemperaturesByCountry.csv
