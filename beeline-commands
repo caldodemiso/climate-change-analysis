@@ -2,7 +2,7 @@
 beeline
 
 -- Use your database
-USE wcastro;
+USE ******;
 
 -- Create external table
 CREATE EXTERNAL TABLE climate_temp (
@@ -14,7 +14,7 @@ CREATE EXTERNAL TABLE climate_temp (
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
-LOCATION '/user/wcastro/climate';
+LOCATION '/user/******/climate';
 
 -- Clean data
 CREATE TABLE clean_climate_temp AS
@@ -41,10 +41,10 @@ GROUP BY Country
 ORDER BY avg_temp DESC;
 
 -- Export tables
-INSERT OVERWRITE DIRECTORY '/user/wcastro/tempo_analysis'
+INSERT OVERWRITE DIRECTORY '/user/******/tempo_analysis'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT * FROM tempo_analysis;
 
-INSERT OVERWRITE DIRECTORY '/user/wcastro/spatial_analysis'
+INSERT OVERWRITE DIRECTORY '/user/******/spatial_analysis'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT * FROM spatial_analysis;
